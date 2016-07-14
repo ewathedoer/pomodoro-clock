@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Pomodoro Clock</title>
+  <meta title="Pomodoro Clock">
+  <meta name="author" content="Designed and coded by the doer.">
+  <meta name="description" content="Pomodoro Clock designed and implemented during FCC course by the doer">
+  <meta name="keywords" content="pomodoro clock">
+  <link rel="stylesheet" href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+  <link rel="stylesheet" href="main.css">  
+</head>
+<body>
+<!-- clocks -->
+  <section class="row">
+    <div class="clocks text-center col-lg-8 col-lg-offset-2 col-sm-12">
+      <h1>Pomodoro Clock</h1>
+
+      <div class="current-timer-box">
+        <div class="headline">
+          <h2>
+            Enter Your Goal
+          </h2>
+        </div>
+        
+
+          <div>
+            <button class="btn btn-default">-</button>
+
+            <div class="current-clock">
+              <div class='outer-shadow'></div>
+              <div class='inner-shadow'><span class="time">30</span></div>
+              <div class='timer'>
+                <div class='dot'>
+                  <span></span>
+                </div>
+                <div class='hold' id='left'>
+                  <div class='pie'></div>
+                </div>
+                <div class='hold' id='right'>
+                  <div class='pie'></div>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-default">+</button>
+          </div> 
+
+        
+      </div>
+
+      <div class="future-timer">
+        <div class="headline">
+          <h2>Future Break</h2>
+        </div>
+        <button class="btn btn-default">-</button>
+        <div class="future-clock"><span>5</span></div>
+        <button class="btn btn-default">+</button>
+      </div>
+
+    </div>
+  </section>
+  
+  <section class="extras row text-center">
+    <a class="col-sm-6 separated">Tweet Your Progress</a>
+    <a class="col-sm-6">Your Pomodoro Story</a>
+  </section>
+  
+<!-- js -->
+<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
+<script src="main.js"></script>
+  
+</body>
+</html>
