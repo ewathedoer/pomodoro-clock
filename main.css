@@ -109,7 +109,7 @@ h1 {
 }
 #left .pie {
   z-index: 1;
-  -webkit-animation: left 4s linear both;
+  -webkit-animation: left 60s linear both;
 }
 @-webkit-keyframes left {
   0% {
@@ -125,8 +125,8 @@ h1 {
 }
 
 #right .pie {
-  -webkit-animation: right 4s linear both;
-  -webkit-animation-delay: 4s;
+  -webkit-animation: right 60s linear both;
+  -webkit-animation-delay: 60s;
 }
 @-webkit-keyframes right {
   0% {
@@ -144,7 +144,7 @@ h1 {
   margin-top: -0.5em;
   z-index: 2;
   position: absolute;
-  -webkit-animation: dot 8s linear both;
+  -webkit-animation: dot 120s linear both;
   -webkit-transform-origin: 0% 50%;
 }
 .dot span {

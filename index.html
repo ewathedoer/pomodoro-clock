@@ -33,8 +33,11 @@
           <h2>
             Session Time
             <span>
-              <button class="btn btn-default">
+              <button id="start-btn" class="btn btn-default">
                 <i class="fa fa-play fa-2x" aria-hidden="true"></i>
+              </button>
+              <button id="pause-btn" class="btn btn-default hidden">
+                <i class="fa fa-pause fa-2x" aria-hidden="true"></i>
               </button>
             </span> 
           </h2>
@@ -42,11 +45,11 @@
         
 
           <div class="current-timer">
-            <button class="btn btn-default lg">-</button>
+            <button class="btn btn-default lg minus-btn">-</button>
 
             <div class="current-clock">
               <div class="outer-shadow"></div>
-              <div class="inner-shadow"><span class="time">30</span></div>
+              <div class="inner-shadow"><span id="current-time" class="time"></span></div>
               <div class="timer">
                 <div class="dot">
                   <span></span>
@@ -60,7 +63,7 @@
               </div>
             </div>
 
-            <button class="btn btn-default lg">+</button>
+            <button class="btn btn-default lg add-btn">+</button>
           </div> 
 
         
@@ -70,9 +73,9 @@
         <div class="headline">
           <h2>Future Break</h2>
         </div>
-        <button class="btn btn-default lg">-</button>
-        <div class="future-clock"><span>5</span></div>
-        <button class="btn btn-default lg">+</button>
+        <button class="btn btn-default lg minus-btn">-</button>
+        <div class="future-clock"><span id="break-time"></span></div>
+        <button class="btn btn-default lg add-btn">+</button>
       </div>
 
     </div>
@@ -80,7 +83,7 @@
   
   <section class="extras row text-center">
     <div class="col-md-8 col-md-offset-2 col-sm-12">
-      <a href="#" class="col-sm-6 separated">Tweet Your Progress</a>
+      <a id="tweet" href="#" class="col-sm-6 separated">Tweet Your Progress</a>
       <a href="#" class="col-sm-6">Pomodoro Story</a>
     </div>
   </section>
