@@ -7,7 +7,7 @@ body {
   background-color: lightcyan;
   min-height: 500px;
   margin-top: 5%;
-  padding: 1em 0;
+  padding: 0 0 1em;
 }
 .headline {
   background-color: lightblue;
@@ -66,6 +66,9 @@ h1 {
 .btn:hover, .btn:focus {
   background-color: deeppink;
   color: #fff;
+}
+.btn.disabled:hover, .btn.disabled:visited, .btn.disabled:focus {
+  color: lightgray;
 }
 
 /* animated timers */
