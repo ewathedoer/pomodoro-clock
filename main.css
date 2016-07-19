@@ -112,6 +112,9 @@ h1 {
 .pie, .dot span {
   background-color: deeppink;
 }
+.dot.complete {
+  display: none;
+}
 .pie {
   width: 100%;
   height: 100%;
@@ -121,14 +124,20 @@ h1 {
 }
 #left .pie {
   z-index: 1;
-  -webkit-animation: left 60s linear both;
+  -webkit-transform: 180deg;
+  -webkit-animation: left 60s linear both infinite paused;
+  transform: 180deg;
+  animation: left 60s linear both infinite paused;
 }
 @-webkit-keyframes left {
   0% {
-    -webkit-transform: rotate(0deg);
+    -webkit-transform: rotate(180deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
   }
   100% {
-    -webkit-transform: rotate(180deg);
+    -webkit-transform: rotate(0deg);
   }
 }
 #right {
@@ -137,15 +146,23 @@ h1 {
 }
 
 #right .pie {
-  -webkit-animation: right 60s linear both;
-  -webkit-animation-delay: 60s;
+  -webkit-transform: 180deg;
+  -webkit-animation: right 60s linear both infinite paused;
+  transform: 180deg;
+  animation: right 60s linear both infinite paused;
 }
 @-webkit-keyframes right {
   0% {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(180deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
 }
 .dot {
@@ -154,10 +171,12 @@ h1 {
   width: 50%;
   height: 1em;
   margin-top: -0.5em;
-  z-index: 2;
+  z-index: 4;
   position: absolute;
-  -webkit-animation: dot 120s linear both;
+  -webkit-animation: dot 60s linear both infinite paused;
   -webkit-transform-origin: 0% 50%;
+  animation: dot 60s linear both infinite paused;
+  transform-origin: 0% 50%;
 }
 .dot span {
   position: absolute;
@@ -168,16 +187,23 @@ h1 {
 }
 @-webkit-keyframes dot {
   0% {
+    transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
   }
   50% {
-    -webkit-transform: rotate(90deg);
+    transform: rotate(-270deg);
+    -webkit-transform: rotate(-270deg);
     z-index: 4;
   }
   100% {
-    -webkit-transform: rotate(270deg);
-    z-index: 4;
+    transform: rotate(-450deg);
+    -webkit-transform: rotate(-450deg);
+    z-index: 2;
   }
+}
+.animating {
+  animation-play-state: running !important;
+  -webkit-animation-play-state: running !important;
 }
 
 

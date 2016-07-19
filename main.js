@@ -6,8 +6,14 @@ var min;
 var intervalHandler = null;
 
 
-function displayCurrentWorkTime() {
-  $("#current-time").text(currentTime - convertToMinutes(workingTimeSecs));
+function displayCurrentWorkTime(forceSubtract) {
+  var minutes = convertToMinutes(workingTimeSecs);
+  if (workingTimeSecs > 0 || forceSubtract) {
+    $("#current-time").text(currentTime - minutes - 1);
+  }
+  else {
+    $("#current-time").text(currentTime - minutes);
+  }
 }
 
 function convertToMinutes(seconds) {
@@ -58,9 +64,19 @@ $(document).ready(function() {
       workingTimeSecs += 1;
       console.log(workingTimeSecs);
       if (workingTimeSecs % 60 == 0) {
-        displayCurrentWorkTime();
+        // countdown finished
+        if (convertToMinutes(workingTimeSecs) == currentTime) {
+          clearInterval(intervalHandler);
+          $(".dot, .pie")
+            .addClass("complete");
+        }
+        else {
+          displayCurrentWorkTime();
+        }
       }
     }, 1000);
+    displayCurrentWorkTime(true);
+    $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
     $("#start-btn").addClass("hidden");
     $("#pause-btn").removeClass("hidden");
     $(".add-btn").addClass("disabled");
@@ -68,6 +84,7 @@ $(document).ready(function() {
   });
   
   $("#pause-btn").on("click", function() {
+    $(".dot, .pie").removeClass("animating");
     clearInterval(intervalHandler);
     $("#start-btn").removeClass("hidden");
     $("#pause-btn").addClass("hidden");
