@@ -10,8 +10,7 @@ function displayCurrentWorkTime(forceSubtract) {
   var minutes = convertToMinutes(workingTimeSecs);
   if (workingTimeSecs > 0 || forceSubtract) {
     $("#current-time").text(currentTime - minutes - 1);
-  }
-  else {
+  } else {
     $("#current-time").text(currentTime - minutes);
   }
 }
@@ -67,10 +66,8 @@ $(document).ready(function() {
         // countdown finished
         if (convertToMinutes(workingTimeSecs) == currentTime) {
           clearInterval(intervalHandler);
-          $(".dot, .pie")
-            .addClass("complete");
-        }
-        else {
+          $(".dot").addClass("complete");
+        } else {
           displayCurrentWorkTime();
         }
       }
@@ -79,8 +76,7 @@ $(document).ready(function() {
     $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
     $("#start-btn").addClass("hidden");
     $("#pause-btn").removeClass("hidden");
-    $(".add-btn").addClass("disabled");
-    $(".minus-btn").addClass("disabled");
+    $(".add-btn, .minus-btn").addClass("disabled");
   });
   
   $("#pause-btn").on("click", function() {
