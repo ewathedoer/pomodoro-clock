@@ -1,19 +1,12 @@
-var currentTime = 25;
-var breakTime = 5;
+var currentTime = 1;
+var breakTime = 1;
 var goal = "something awesome";
 var workingTimeSecs = 0;
+var breakTimeSecs = 0;
 var min;
 var intervalHandler = null;
+var breakIntervalHandler = null;
 
-
-function displayCurrentWorkTime(forceSubtract) {
-  var minutes = convertToMinutes(workingTimeSecs);
-  if (workingTimeSecs > 0 || forceSubtract) {
-    $("#current-time").text(currentTime - minutes - 1);
-  } else {
-    $("#current-time").text(currentTime - minutes);
-  }
-}
 
 function convertToMinutes(seconds) {
   return Math.floor(seconds / 60);
@@ -22,7 +15,7 @@ function convertToMinutes(seconds) {
 function timeCustomization() {
   $(".current-timer .minus-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
-      if (currentTime > 0) {
+      if (currentTime > 1) {
         currentTime -= 1
       }
       displayCurrentWorkTime();
@@ -50,6 +43,58 @@ function timeCustomization() {
   });
 }
 
+function displayCurrentWorkTime(forceSubtract) {
+  var minutes = convertToMinutes(workingTimeSecs);
+  if (workingTimeSecs > 0 || forceSubtract) {
+    $("#current-time").text(currentTime - minutes - 1);
+  } else {
+    $("#current-time").text(currentTime - minutes);
+  }
+}
+
+function displayCurrentBreakTime() {
+  var minutes = convertToMinutes(breakTimeSecs);
+  if (breakTimeSecs > 0) {
+    $("#break-time").text(breakTime - minutes);
+  } else {
+    $("#break-time").text(breakTime - minutes);
+  }
+}
+
+// start a break
+function breakStart() {
+  if (convertToMinutes(workingTimeSecs) == currentTime) {
+    console.log("start");
+    $("#break-clock").addClass("animated pulse infinite");
+    
+    breakIntervalHandler = setInterval(function(){
+      breakTimeSecs += 1;
+      console.log(breakTimeSecs);
+      if (breakTimeSecs % 60 == 0) {
+        if (convertToMinutes(breakTimeSecs) == breakTime) {
+          clearInterval(breakIntervalHandler);
+          $("#break-clock").removeClass("animated pulse infinite");
+          $("#break-time").text("0");
+        } else {
+          displayCurrentBreakTime();
+        }
+      }
+    }, 1000);
+    
+  }
+  displayCurrentBreakTime();
+}
+
+
+//function displayRefreshClocksOption() {
+  //if ((breakTime == convertToMinutes(breakTimeSecs))) {
+    //$("#pause-btn").addClass("hidden");
+    //$("#refresh-btn").removeClass("hidden");
+  //}
+//}
+
+
+
 $(document).ready(function() {
   displayCurrentWorkTime();
   $("#break-time").text(breakTime);
@@ -57,33 +102,55 @@ $(document).ready(function() {
   // time spans customization
   timeCustomization();
   
+ 
   // starting countdown of work time
   $("#start-btn").on("click", function() {
-    intervalHandler = setInterval(function() {
-      workingTimeSecs += 1;
-      console.log(workingTimeSecs);
-      if (workingTimeSecs % 60 == 0) {
-        // countdown finished
-        if (convertToMinutes(workingTimeSecs) == currentTime) {
-          clearInterval(intervalHandler);
-          $(".dot").addClass("complete");
-        } else {
-          displayCurrentWorkTime();
+    if (breakIntervalHandler == null) {
+      intervalHandler = setInterval(function() {
+        workingTimeSecs += 1;
+        console.log(workingTimeSecs);
+        if (workingTimeSecs % 60 == 0) {
+          // countdown finished
+          if (convertToMinutes(workingTimeSecs) == currentTime) {
+            clearInterval(intervalHandler);
+            $(".dot").addClass("complete");
+
+            // breaks
+            breakStart();
+          } else {
+            displayCurrentWorkTime();
+          }
         }
-      }
-    }, 1000);
-    displayCurrentWorkTime(true);
-    $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
-    $("#start-btn").addClass("hidden");
-    $("#pause-btn").removeClass("hidden");
-    $(".add-btn, .minus-btn").addClass("disabled");
-  });
+      }, 1000);
+      displayCurrentWorkTime(true);
+      $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
+      $("#start-btn").addClass("hidden");
+      $("#pause-btn").removeClass("hidden");
+      $(".add-btn, .minus-btn").addClass("disabled");
+    } else {
+      if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
+        breakStart();
+        $("#start-btn").addClass("hidden");
+        $("#pause-btn").removeClass("hidden");
+        $("#break-clock").addClass("animated pulse infinite");
+      } 
+    }
+  }); // countdown of work time
+
+  
   
   $("#pause-btn").on("click", function() {
-    $(".dot, .pie").removeClass("animating");
-    clearInterval(intervalHandler);
-    $("#start-btn").removeClass("hidden");
-    $("#pause-btn").addClass("hidden");
+    if (breakIntervalHandler == null) {
+      $(".dot, .pie").removeClass("animating");
+      clearInterval(intervalHandler);
+      $("#start-btn").removeClass("hidden");
+      $("#pause-btn").addClass("hidden");
+    } else {
+      clearInterval(breakIntervalHandler);
+      $("#start-btn").removeClass("hidden");
+      $("#pause-btn").addClass("hidden");
+      $("#break-clock").removeClass("animated pulse infinite");
+    }
   });
   
   // saving the goal
@@ -105,5 +172,8 @@ $(document).ready(function() {
     window.open(twtProgress, '_blank');
     e.preventDefault();
  });
+  
+  // reset option 
+ // displayRefreshClocksOption();
  
 });

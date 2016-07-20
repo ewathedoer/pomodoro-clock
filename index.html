@@ -11,6 +11,7 @@
   <link rel="stylesheet" href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
   <link rel="stylesheet" href="main.css">
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,100' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="animate.css">
   <script src="https://use.fontawesome.com/e991ea339d.js"></script>
 </head>
 <body class="container-fluid">
@@ -35,6 +36,9 @@
               </button>
               <button id="pause-btn" class="btn btn-default hidden">
                 <i class="fa fa-pause fa-2x" aria-hidden="true"></i>
+              </button>
+              <button id="refresh-btn" class="btn btn-default hidden">
+                <i class="fa fa-refresh fa-2x" aria-hidden="true"></i>
               </button>
             </span> 
           </h2>
@@ -71,7 +75,7 @@
           <h2>Break Time</h2>
         </div>
         <button class="btn btn-default lg minus-btn">-</button>
-        <div class="future-clock"><span id="break-time"></span></div>
+        <div id="break-clock" class="future-clock"><span id="break-time"></span></div>
         <button class="btn btn-default lg add-btn">+</button>
       </div>
 
