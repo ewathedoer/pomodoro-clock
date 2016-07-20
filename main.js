@@ -6,6 +6,7 @@ var breakTimeSecs = 0;
 var min;
 var intervalHandler = null;
 var breakIntervalHandler = null;
+var history = [];
 
 
 function convertToMinutes(seconds) {
@@ -93,6 +94,23 @@ function breakStart() {
   //}
 //}
 
+// restarting clocks
+function refresh() {
+  currentTime = 25;
+  breakTime = 5;
+  goal = "something awesome";
+  workingTimeSecs = 0;
+  breakTimeSecs = 0;
+  intervalHandler = null;
+  breakIntervalHandler = null;
+  
+  $(".add-btn, .minus-btn").removeClass("disabled");
+  $("#start-btn").removeClass("hidden");
+  $("#pause-btn").addClass("hidden");
+  $("#refresh-btn").addClass("hidden");
+  $(".current-timer-box").removeClass("blurred");
+}
+
 
 
 $(document).ready(function() {
@@ -117,6 +135,9 @@ $(document).ready(function() {
 
             // breaks
             breakStart();
+            
+            // blur starts
+            $(".current-timer-box").addClass("blurred");
           } else {
             displayCurrentWorkTime();
           }
@@ -175,5 +196,13 @@ $(document).ready(function() {
   
   // reset option 
  // displayRefreshClocksOption();
+  
+// saving history in local storage
+//localStorage.setItem(history, goal);
+  
+// restart
+$("#refresh-btn").on("click", function() {
+  refresh();
+});
  
 });
