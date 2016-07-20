@@ -1,4 +1,4 @@
-var currentTime = 1;
+var currentTime = 2;
 var breakTime = 1;
 var goal = "something awesome";
 var workingTimeSecs = 0;
@@ -7,7 +7,6 @@ var min;
 var intervalHandler = null;
 var breakIntervalHandler = null;
 var history = [];
-var beep = $("#beep");
 
 
 function convertToMinutes(seconds) {
@@ -15,42 +14,50 @@ function convertToMinutes(seconds) {
 }
 
 function timeCustomization() {
-  // visual hint for disabled customization cases
-  //customizationBtnDisabled();
-  
   $(".current-timer .minus-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
       if (currentTime > 1) {
-        currentTime -= 1
+        currentTime -= 1;
       }
+      // visual hint for disabled customization cases
+      customizationBtnDisabled();
+      
       displayCurrentWorkTime();
     }
   });
   $(".current-timer .add-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
       currentTime += 1;
+      // visual hint for disabled customization cases
+      customizationBtnDisabled();
+      
       displayCurrentWorkTime();
     }
   });
   $(".future-timer .minus-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
       if (breakTime > 0) {
-      breakTime -= 1;
+        breakTime -= 1;
       }
-      $("#break-time").text(breakTime);  
+      // visual hint for disabled customization cases
+      customizationBtnDisabled();
+    
+      displayCurrentBreakTime();  
     }
   });
   $(".future-timer .add-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
       breakTime += 1;
-      $("#break-time").text(breakTime);
+      displayCurrentBreakTime();
     }
+      // visual hint for disabled customization cases
+      customizationBtnDisabled();
   });
 }
 
-function displayCurrentWorkTime(forceSubtract) {
+function displayCurrentWorkTime(forceSubtractWhenPlay) {
   var minutes = convertToMinutes(workingTimeSecs);
-  if (workingTimeSecs > 0 || forceSubtract) {
+  if (workingTimeSecs > 0 || forceSubtractWhenPlay) {
     $("#current-time").text(currentTime - minutes - 1);
   } else {
     $("#current-time").text(currentTime - minutes);
@@ -58,52 +65,60 @@ function displayCurrentWorkTime(forceSubtract) {
 }
 
 function displayCurrentBreakTime() {
-  var minutes = convertToMinutes(breakTimeSecs);
-  if (breakTimeSecs > 0) {
-    $("#break-time").text(breakTime - minutes);
-  } else {
-    $("#break-time").text(breakTime - minutes);
-  }
+  $("#break-time").text(breakTime - convertToMinutes(breakTimeSecs));
 }
 
 // start a break
 function breakStart() {
   if (convertToMinutes(workingTimeSecs) == currentTime) {
     console.log("start");
-    $("#break-clock").addClass("animated pulse infinite");
     
-    breakIntervalHandler = setInterval(function(){
-      breakTimeSecs += 1;
-      console.log(breakTimeSecs);
-      if (breakTimeSecs % 60 == 0) {
-        if (convertToMinutes(breakTimeSecs) == breakTime) {
-          clearInterval(breakIntervalHandler);
-          $("#break-clock").removeClass("animated pulse infinite");
-          $("#break-time").text("0");
-          // audio alarm
-          beepPlay();
-        } else {
-          displayCurrentBreakTime();
+    if (breakTime == 0) {
+      setTimeout(function() {
+        // audio alarm
+        beepPlay();
+      }, 1500);
+      
+      // reset option 
+      displayRefreshClocksOption();
+      
+    } else {
+      $("#break-clock").addClass("animated pulse infinite");
+    
+      breakIntervalHandler = setInterval(function(){
+        breakTimeSecs += 1;
+        console.log(breakTimeSecs);
+        if (breakTimeSecs % 60 == 0) {
+          if (convertToMinutes(breakTimeSecs) == breakTime) {
+            clearInterval(breakIntervalHandler);
+            $("#break-clock").removeClass("animated pulse infinite");
+            $("#break-time").text("0");
+
+            // audio alarm
+            beepPlay();
+
+            // reset option 
+            displayRefreshClocksOption();
+          } else {
+            displayCurrentBreakTime();
+          }
         }
-      }
-    }, 1000);
-    
+      }, 1000);
+    }
   }
   displayCurrentBreakTime();
 }
 
-
-//function displayRefreshClocksOption() {
-  //if ((breakTime == convertToMinutes(breakTimeSecs))) {
-    //$("#pause-btn").addClass("hidden");
-    //$("#refresh-btn").removeClass("hidden");
-  //}
-//}
+function displayRefreshClocksOption() {
+  if ((breakTime == convertToMinutes(breakTimeSecs))) {
+    $("#pause-btn").addClass("hidden");
+    $("#refresh-btn").removeClass("hidden");
+    $(".future-timer").addClass("blurred");
+  }
+}
 
 // restarting clocks
 function refresh() {
-  currentTime = 25;
-  breakTime = 5;
   goal = "something awesome";
   workingTimeSecs = 0;
   breakTimeSecs = 0;
@@ -115,6 +130,18 @@ function refresh() {
   $("#pause-btn").addClass("hidden");
   $("#refresh-btn").addClass("hidden");
   $(".current-timer-box").removeClass("blurred");
+  $(".future-timer").removeClass("blurred");
+  $(".pie, .dot").removeClass("animating");
+  
+  $("#left .pie, #right .pie, .dot").removeClass("animated");
+  setTimeout(function() {
+    $(".dot").removeClass("complete");
+    $("#left .pie, #right .pie, .dot").addClass("animated");
+  }, 500);
+  
+  customizationBtnDisabled();
+  displayCurrentWorkTime();
+  displayCurrentBreakTime();
 }
 
 // alarm
@@ -125,22 +152,22 @@ function beepPlay() {
 // marking the buttons of customization when disabled to perform minus
 function customizationBtnDisabled() {
   if (currentTime <= 1) {
-    $(".minus-btn").addClass("disabled"); 
+    $(".current-timer .minus-btn").addClass("disabled"); 
   } else {
-    $(".minus-btn").removeClass("disabled"); 
+    $(".current-timer .minus-btn").removeClass("disabled"); 
   }
   
-  if (breakTime <= 1) {
-    $(".minus-btn").addClass("disabled"); 
+  if (breakTime <= 0) {
+    $(".future-timer .minus-btn").addClass("disabled"); 
   } else {
-    $(".minus-btn").removeClass("disabled"); 
+    $(".future-timer .minus-btn").removeClass("disabled"); 
   }
 }
 
 
 $(document).ready(function() {
   displayCurrentWorkTime();
-  $("#break-time").text(breakTime);
+  displayCurrentBreakTime();
   
   // time spans customization
   timeCustomization();
@@ -218,17 +245,14 @@ $(document).ready(function() {
     var twtProgress = "https://twitter.com/intent/tweet?hashtags=pomodoro&related=thedoerdoes&text=" + encodeURIComponent(progress);
     window.open(twtProgress, '_blank');
     e.preventDefault();
- });
+  });
   
-  // reset option 
- // displayRefreshClocksOption();
+  // saving history in local storage
   
-// saving history in local storage
-//localStorage.setItem(history, goal);
   
-// restart
-$("#refresh-btn").on("click", function() {
-  refresh();
-});
+  // restart
+  $("#refresh-btn").on("click", function() {
+    refresh();
+  });
   
 });
