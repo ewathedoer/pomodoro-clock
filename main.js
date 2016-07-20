@@ -6,7 +6,7 @@ var breakTimeSecs = 0;
 var min;
 var intervalHandler = null;
 var breakIntervalHandler = null;
-var history = [];
+var pomodoroHistory = [];
 
 
 function convertToMinutes(seconds) {
@@ -74,6 +74,9 @@ function breakStart() {
     console.log("start");
     
     if (breakTime == 0) {
+      // add pomodoro history 
+      saveToStorage(new Date(), goal, currentTime);
+      
       setTimeout(function() {
         // audio alarm
         beepPlay();
@@ -93,7 +96,10 @@ function breakStart() {
             clearInterval(breakIntervalHandler);
             $("#break-clock").removeClass("animated pulse infinite");
             $("#break-time").text("0");
-
+            
+            // add pomodoro history 
+            saveToStorage(new Date(), goal, currentTime);
+            
             // audio alarm
             beepPlay();
 
@@ -164,10 +170,39 @@ function customizationBtnDisabled() {
   }
 }
 
+function saveToStorage(time, goal, workSession) {
+  // saving history in local storage in reversed chronological order
+  if (typeof(Storage) !== "undefined") {
+    pomodoroHistory.unshift({time: time, goal: goal, workSession: workSession});
+    // local storage requires converting strings to the format needed
+    localStorage.setItem("pomodoroItems", JSON.stringify(pomodoroHistory));
+  } 
+}
+
 
 $(document).ready(function() {
   displayCurrentWorkTime();
   displayCurrentBreakTime();
+  
+  // hide local storage option if not supported by a browser
+  if (typeof(Storage) == "undefined") {
+    $("#pomodoro-history").hide();
+  } else {
+    pomodoroHistory = JSON.parse(localStorage.getItem("pomodoroItems"));
+  }
+  
+  // pomodoro history
+  $("#pomodoro-history").on("click", function() {
+    // cleaning modal content
+    $("#history-list").html("");
+
+    // take out each item separately
+    for (var i = 0; i < pomodoroHistory.length; i++) {
+      var item = pomodoroHistory[i];
+      var htmlItem = "<li>On " + item.time + " you worked on " + item.goal + " for " + item.workSession + " " +  (item.workSession == 1 ? "minute" : "minutes") + "</li>";
+      $("#history-list").append(htmlItem);
+    }
+  });
   
   // time spans customization
   timeCustomization();
@@ -246,9 +281,6 @@ $(document).ready(function() {
     window.open(twtProgress, '_blank');
     e.preventDefault();
   });
-  
-  // saving history in local storage
-  
   
   // restart
   $("#refresh-btn").on("click", function() {

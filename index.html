@@ -88,10 +88,25 @@
   
   <section class="extras row text-center">
     <div class="col-md-8 col-md-offset-2 col-sm-12">
-      <a id="tweet" href="#" class="col-sm-6 separated">Tweet Progress</a>
-      <a href="#" class="col-sm-6">History</a>
+      <a id="tweet" href="#" class="col-sm-6">Tweet Progress</a>
+      <a id="pomodoro-history" href="#" class="col-sm-6 separated" data-toggle="modal" data-target="#history-modal">History</a>
     </div>
   </section>
+  
+  <!-- Pomodoro History Modal -->
+  <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-labelledby="my-pomodoro-history">
+    <div class="modal-dialog" role="document">
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="my-pomodoro-history">My Pomodoro History</h4>
+        </div>
+        <!-- loading fake for slow internet connection -->
+        <div id="history-list" class="modal-body">...</div>
+      </div>
+    </div>
+  </div>
   
 <!-- js -->
 <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
