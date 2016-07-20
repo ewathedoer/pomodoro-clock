@@ -7,6 +7,7 @@ var min;
 var intervalHandler = null;
 var breakIntervalHandler = null;
 var history = [];
+var beep = $("#beep");
 
 
 function convertToMinutes(seconds) {
@@ -14,6 +15,9 @@ function convertToMinutes(seconds) {
 }
 
 function timeCustomization() {
+  // visual hint for disabled customization cases
+  //customizationBtnDisabled();
+  
   $(".current-timer .minus-btn").on("click", function(){
     if (!$(this).hasClass("disabled")) {
       if (currentTime > 1) {
@@ -76,6 +80,8 @@ function breakStart() {
           clearInterval(breakIntervalHandler);
           $("#break-clock").removeClass("animated pulse infinite");
           $("#break-time").text("0");
+          // audio alarm
+          beepPlay();
         } else {
           displayCurrentBreakTime();
         }
@@ -111,6 +117,25 @@ function refresh() {
   $(".current-timer-box").removeClass("blurred");
 }
 
+// alarm
+function beepPlay() {
+  $("#beep").trigger('play');
+}
+
+// marking the buttons of customization when disabled to perform minus
+function customizationBtnDisabled() {
+  if (currentTime <= 1) {
+    $(".minus-btn").addClass("disabled"); 
+  } else {
+    $(".minus-btn").removeClass("disabled"); 
+  }
+  
+  if (breakTime <= 1) {
+    $(".minus-btn").addClass("disabled"); 
+  } else {
+    $(".minus-btn").removeClass("disabled"); 
+  }
+}
 
 
 $(document).ready(function() {
@@ -133,6 +158,9 @@ $(document).ready(function() {
             clearInterval(intervalHandler);
             $(".dot").addClass("complete");
 
+            // audio alarm
+            beepPlay();
+            
             // breaks
             breakStart();
             
@@ -156,9 +184,7 @@ $(document).ready(function() {
         $("#break-clock").addClass("animated pulse infinite");
       } 
     }
-  }); // countdown of work time
-
-  
+  }); 
   
   $("#pause-btn").on("click", function() {
     if (breakIntervalHandler == null) {
@@ -204,5 +230,5 @@ $(document).ready(function() {
 $("#refresh-btn").on("click", function() {
   refresh();
 });
- 
+  
 });
