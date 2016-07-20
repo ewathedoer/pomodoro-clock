@@ -1,5 +1,5 @@
-var currentTime = 2;
-var breakTime = 1;
+var currentTime = 25;
+var breakTime = 5;
 var goal = "something awesome";
 var workingTimeSecs = 0;
 var breakTimeSecs = 0;
@@ -188,7 +188,10 @@ $(document).ready(function() {
   if (typeof(Storage) == "undefined") {
     $("#pomodoro-history").hide();
   } else {
-    pomodoroHistory = JSON.parse(localStorage.getItem("pomodoroItems"));
+    var pomodoroTemp = JSON.parse(localStorage.getItem("pomodoroItems"));
+    if (pomodoroTemp !== null) {
+      pomodoroHistory = pomodoroTemp;
+    }
   }
   
   // pomodoro history
