@@ -184,6 +184,14 @@ $(document).ready(function() {
   displayCurrentWorkTime();
   displayCurrentBreakTime();
   
+  // manging start-btn attention markers
+  setTimeout(function() {
+    $("#start-btn").addClass("animated flash attention-btn");
+  }, 1000);
+  setTimeout(function(){
+    $("#start-btn").removeClass("animated flash attention-btn");
+  }, 1500);
+  
   // hide local storage option if not supported by a browser
   if (typeof(Storage) == "undefined") {
     $("#pomodoro-history").hide();

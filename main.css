@@ -77,6 +77,13 @@ h1 {
 .btn.disabled:hover, .btn.disabled:visited, .btn.disabled:focus {
   color: lightgray;
 }
+.attention-btn {
+  background-color: deeppink;
+  color: #fff;
+}
+.attention-btn: hover, .attention-btn:focus {
+  color: black;
+}
 
 /* animated timers */
 .current-clock {
