@@ -1,3 +1,8 @@
+/* color palette 
+action color: deeppink;
+textcolor: #121212;
+*/
+
 body {
   background-color: whitesmoke;
   color: #121212;
@@ -83,6 +88,14 @@ h1 {
 }
 .attention-btn: hover, .attention-btn:focus {
   color: black;
+}
+
+/* modal */
+.modal-body li {
+  padding: 1em 0;
+}
+.modal-header .close {
+  color: deeppink;
 }
 
 /* animated timers */
