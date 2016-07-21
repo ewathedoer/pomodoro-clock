@@ -182,6 +182,13 @@ function saveToStorage(time, goal, workSession) {
   } 
 }
 
+function pad(value) {
+    if(value < 10) {
+        return '0' + value;
+    } else {
+        return value;
+    }
+}
 
 $(document).ready(function() {
   displayCurrentWorkTime();
@@ -209,12 +216,19 @@ $(document).ready(function() {
   $("#pomodoro-history").on("click", function() {
     // cleaning modal content
     $("#history-list").html("");
-
-    // take out each item separately
-    for (var i = 0; i < pomodoroHistory.length; i++) {
-      var item = pomodoroHistory[i];
-      var htmlItem = "<li>On " + item.time + " you worked on " + item.goal + " for " + item.workSession + " " +  (item.workSession == 1 ? "minute" : "minutes") + "</li>";
-      $("#history-list").append(htmlItem);
+    // empty pomodoro history
+    if (pomodoroHistory.length == 0) {
+      $("#history-list").text("There is no history yet. Go and create some!");
+    } else {
+      // take out each item separately
+      for (var i = 0; i < pomodoroHistory.length; i++) {
+        var item = pomodoroHistory[i];
+        item.time = new Date(item.time);
+        var itemTime = item.time.getFullYear() + "-" + pad(item.time.getMonth()+1) + "-" + item.time.getDate();
+        var itemHour = pad(item.time.getHours()) + ":" + pad(item.time.getMinutes());
+        var htmlItem = "<li>On " + itemTime + " at " + itemHour + " you finished working on " + item.goal + ". You worked for " + item.workSession + " " +  (item.workSession == 1 ? "minute" : "minutes") + ".</li>";
+        $("#history-list").append(htmlItem);
+      }
     }
   });
   
