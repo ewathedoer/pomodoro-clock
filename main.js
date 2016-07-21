@@ -138,7 +138,11 @@ function refresh() {
   $("#refresh-btn").addClass("hidden");
   $(".current-timer-box").removeClass("blurred");
   $(".future-timer").removeClass("blurred");
-  $(".pie, .dot").removeClass("animating");
+  if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+    $(".dot, .pie").removeClass("animating");
+  } else {
+    $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+  }
   
   $("#left .pie, #right .pie, .dot").removeClass("animatable");
   setTimeout(function() {
@@ -260,10 +264,15 @@ $(document).ready(function() {
         }
       }, 1000);
       displayCurrentWorkTime(true);
-      //$(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
       $("#start-btn").addClass("hidden");
       $("#pause-btn").removeClass("hidden");
       $(".add-btn, .minus-btn").addClass("disabled");
+      // for non-webkit browsers use a different animation
+      if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+        $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
+      } else {
+        $(".current-clock .inner-shadow").addClass("animated pulse infinite");
+      }
     } else {
       if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
         breakStart();
@@ -276,7 +285,11 @@ $(document).ready(function() {
   
   $("#pause-btn").on("click", function() {
     if (breakIntervalHandler == null) {
-      $(".dot, .pie").removeClass("animating");
+      if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+        $(".dot, .pie").removeClass("animating");
+      } else {
+        $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+      }
       clearInterval(intervalHandler);
       $("#start-btn").removeClass("hidden");
       $("#pause-btn").addClass("hidden");
