@@ -1,5 +1,5 @@
-var currentTime = 25;
-var breakTime = 5;
+var currentTime = 1;
+var breakTime = 1;
 var goal = "something awesome";
 var workingTimeSecs = 0;
 var breakTimeSecs = 0;
@@ -120,11 +120,14 @@ function displayRefreshClocksOption() {
     $("#pause-btn").addClass("hidden");
     $("#refresh-btn").removeClass("hidden");
     $(".future-timer").addClass("blurred");
+    
+    $("#goal").val("Congratulations, you've reached your goal!");
   }
 }
 
 // restarting clocks
 function refresh() {
+  $("#goal").val("");
   goal = "something awesome";
   workingTimeSecs = 0;
   breakTimeSecs = 0;
