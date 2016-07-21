@@ -50,8 +50,8 @@ function timeCustomization() {
       breakTime += 1;
       displayCurrentBreakTime();
     }
-      // visual hint for disabled customization cases
-      customizationBtnDisabled();
+    // visual hint for disabled customization cases
+    customizationBtnDisabled();
   });
 }
 
@@ -71,14 +71,12 @@ function displayCurrentBreakTime() {
 // start a break
 function breakStart() {
   if (convertToMinutes(workingTimeSecs) == currentTime) {
-    console.log("start");
-    
     if (breakTime == 0) {
       // add pomodoro history 
       saveToStorage(new Date(), goal, currentTime);
       
+      // giving extra time for the previous beep to beep out
       setTimeout(function() {
-        // audio alarm
         beepPlay();
       }, 1500);
       
@@ -90,8 +88,9 @@ function breakStart() {
     
       breakIntervalHandler = setInterval(function(){
         breakTimeSecs += 1;
-        console.log(breakTimeSecs);
+        // check every full minute...
         if (breakTimeSecs % 60 == 0) {
+          // ...if the break has finished
           if (convertToMinutes(breakTimeSecs) == breakTime) {
             clearInterval(breakIntervalHandler);
             $("#break-clock").removeClass("animated pulse infinite");
@@ -100,7 +99,6 @@ function breakStart() {
             // add pomodoro history 
             saveToStorage(new Date(), goal, currentTime);
             
-            // audio alarm
             beepPlay();
 
             // reset option 
@@ -124,7 +122,7 @@ function displayRefreshClocksOption() {
 }
 
 // restarting clocks
-function refresh() {
+function refreshPomodoro() {
   $("#goal").val("");
   goal = "something awesome";
   workingTimeSecs = 0;
@@ -138,13 +136,14 @@ function refresh() {
   $("#refresh-btn").addClass("hidden");
   $(".current-timer-box").removeClass("blurred");
   $(".future-timer").removeClass("blurred");
-  if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+  if(checkWebkit()){
     $(".dot, .pie").removeClass("animating");
   } else {
     $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
   }
   
   $("#left .pie, #right .pie, .dot").removeClass("animatable");
+  // giving extra time so the browser can reset the animation
   setTimeout(function() {
     $(".dot").removeClass("complete");
     $("#left .pie, #right .pie, .dot").addClass("animatable");
@@ -185,11 +184,15 @@ function saveToStorage(time, goal, workSession) {
 }
 
 function pad(value) {
-    if(value < 10) {
-        return '0' + value;
-    } else {
-        return value;
-    }
+  if(value < 10) {
+    return "0" + value;
+  } else {
+    return value;
+  }
+}
+
+function checkWebkit() {
+  return navigator.userAgent.indexOf('AppleWebKit') != -1;
 }
 
 $(document).ready(function() {
@@ -228,7 +231,12 @@ $(document).ready(function() {
         item.time = new Date(item.time);
         var itemTime = item.time.getFullYear() + "-" + pad(item.time.getMonth()+1) + "-" + item.time.getDate();
         var itemHour = pad(item.time.getHours()) + ":" + pad(item.time.getMinutes());
-        var htmlItem = "<li>On " + itemTime + " at " + itemHour + " you finished working on " + item.goal + ". You worked for " + item.workSession + " " +  (item.workSession == 1 ? "minute" : "minutes") + ".</li>";
+        var htmlItem = "<li>"
+            + "On " + itemTime 
+            + " at " + itemHour + " you finished working on " 
+            + item.goal + ". You worked for " + item.workSession 
+            + " " +  (item.workSession == 1 ? "minute" : "minutes") + "."
+          + "</li>";
         $("#history-list").append(htmlItem);
       }
     }
@@ -237,28 +245,25 @@ $(document).ready(function() {
   // time spans customization
   timeCustomization();
   
- 
   // starting countdown of work time
   $("#start-btn").on("click", function() {
     if (breakIntervalHandler == null) {
+      
       intervalHandler = setInterval(function() {
         workingTimeSecs += 1;
-        console.log(workingTimeSecs);
         if (workingTimeSecs % 60 == 0) {
           // countdown finished
           if (convertToMinutes(workingTimeSecs) == currentTime) {
             clearInterval(intervalHandler);
             $(".dot").addClass("complete");
-            if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+            if(checkWebkit()) {
               $(".dot, .pie").removeClass("animating");
             } else {
               $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
             }
 
-            // audio alarm
             beepPlay();
             
-            // breaks
             breakStart();
             
             // blur starts
@@ -268,29 +273,28 @@ $(document).ready(function() {
           }
         }
       }, 1000);
+      
       displayCurrentWorkTime(true);
       $("#start-btn").addClass("hidden");
       $("#pause-btn").removeClass("hidden");
       $(".add-btn, .minus-btn").addClass("disabled");
       // for non-webkit browsers use a different animation
-      if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+      if(checkWebkit()){
         $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
       } else {
         $(".current-clock .inner-shadow").addClass("animated pulse infinite");
       }
-    } else {
-      if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
-        breakStart();
-        $("#start-btn").addClass("hidden");
-        $("#pause-btn").removeClass("hidden");
-        $("#break-clock").addClass("animated pulse infinite");
-      } 
+    } else if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
+      breakStart();
+      $("#start-btn").addClass("hidden");
+      $("#pause-btn").removeClass("hidden");
+      $("#break-clock").addClass("animated pulse infinite");
     }
   }); 
   
   $("#pause-btn").on("click", function() {
     if (breakIntervalHandler == null) {
-      if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+      if(checkWebkit()){
         $(".dot, .pie").removeClass("animating");
       } else {
         $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
@@ -328,7 +332,7 @@ $(document).ready(function() {
   
   // restart
   $("#refresh-btn").on("click", function() {
-    refresh();
+    refreshPomodoro();
   });
   
 });
