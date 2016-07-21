@@ -155,15 +155,15 @@ function beepPlay() {
   $("#beep").trigger('play');
 }
 
-// marking the buttons of customization when disabled to perform minus
+// marking the buttons of time customization when disabled
 function customizationBtnDisabled() {
-  if (currentTime <= 1) {
+  if (currentTime <= 1 || workingTimeSecs > 0) {
     $(".current-timer .minus-btn").addClass("disabled"); 
   } else {
     $(".current-timer .minus-btn").removeClass("disabled"); 
   }
   
-  if (breakTime <= 0) {
+  if (breakTime <= 0 || workingTimeSecs > 0) {
     $(".future-timer .minus-btn").addClass("disabled"); 
   } else {
     $(".future-timer .minus-btn").removeClass("disabled"); 
