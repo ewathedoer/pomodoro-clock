@@ -1,5 +1,5 @@
-var currentTime = 1;
-var breakTime = 1;
+var currentTime = 25;
+var breakTime = 5;
 var goal = "something awesome";
 var workingTimeSecs = 0;
 var breakTimeSecs = 0;

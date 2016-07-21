@@ -134,6 +134,7 @@ h1 {
   position: absolute;
   clip: rect(0, 10em, 10em, 5em);
   -webkit-border-radius: 100%;
+  border-radius: 100%;
   background-color: #fff;
 }
 .pie, .dot span {
@@ -146,15 +147,16 @@ h1 {
   width: 100%;
   height: 100%;
   position: absolute;
+  border-radius: 100%;
   -webkit-border-radius: 100%;
   clip: rect(0em, 5em, 10em, 0em);
 }
 #left .pie.animated {
   z-index: 1;
-  -webkit-transform: rotate(180deg);
-  -webkit-animation: left 60s linear both infinite paused;
   transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
   animation: left 60s linear both infinite paused;
+  -webkit-animation: left 60s linear both infinite paused;
 }
 @-webkit-keyframes left {
   0% {
@@ -208,6 +210,7 @@ h1 {
 .dot.animated {
   -webkit-animation: dot 60s linear both infinite paused;
   -webkit-transform-origin: 0% 50%;
+  transform-origin: 0% 50%;
   animation: dot 60s linear both infinite paused;
 }
 .dot span {
