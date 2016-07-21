@@ -249,6 +249,11 @@ $(document).ready(function() {
           if (convertToMinutes(workingTimeSecs) == currentTime) {
             clearInterval(intervalHandler);
             $(".dot").addClass("complete");
+            if(navigator.userAgent.indexOf('AppleWebKit') != -1){
+              $(".dot, .pie").removeClass("animating");
+            } else {
+              $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+            }
 
             // audio alarm
             beepPlay();
