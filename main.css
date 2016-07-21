@@ -41,6 +41,7 @@ body {
 }
 .future-clock span {
   font-size: 4em;
+  line-height: 1.7em;
 }
 .extras {
   padding: 1em;
@@ -151,50 +152,66 @@ h1 {
   -webkit-border-radius: 100%;
   clip: rect(0em, 5em, 10em, 0em);
 }
-#left .pie.animated {
+#left .pie.animatable {
   z-index: 1;
   transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
-  animation: left 60s linear both infinite paused;
-  -webkit-animation: left 60s linear both infinite paused;
+  -moz-transform: rotate(180deg);
+}
+#left .pie.animatable.animating {
+  animation: left 60s linear both infinite;
+  -webkit-animation: left 60s linear both infinite;
+  -moz-animation: left 60s linear both infinite;
 }
 @-webkit-keyframes left {
   0% {
+    -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
   }
   50% {
+    -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
   }
   100% {
+    -moz-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 }
 #right {
   z-index: 3;
+  transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
 }
 
-#right .pie.animated {
-  -webkit-transform: rotate(180deg);
-  -webkit-animation: right 60s linear both infinite paused;
+#right .pie.animatable {
   transform: rotate(180deg);
-  animation: right 60s linear both infinite paused;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+}
+#right .pie.animatable.animating {
+  animation: right 60s linear both infinite;
+  -webkit-animation: right 60s linear both infinite;
+  -moz-animation: right 60s linear both infinite;
 }
 @-webkit-keyframes right {
   0% {
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
   }
   50% {
     transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
   }
   100% {
     transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
   }
 }
 .dot {
@@ -205,13 +222,16 @@ h1 {
   margin-top: -0.5em;
   z-index: 4;
   position: absolute;
-  transform-origin: 0% 50%;
 }
-.dot.animated {
-  -webkit-animation: dot 60s linear both infinite paused;
-  -webkit-transform-origin: 0% 50%;
+.dot.animatable {
   transform-origin: 0% 50%;
-  animation: dot 60s linear both infinite paused;
+  -webkit-transform-origin: 0% 50%;
+  -moz-transform-origin: 0% 50%;
+}
+.dot.animatable.animating {
+  animation: dot 60s linear both infinite;
+  -webkit-animation: dot 60s linear both infinite;
+  -moz-animation: dot 60s linear both infinite;
 }
 .dot span {
   position: absolute;
@@ -224,22 +244,26 @@ h1 {
   0% {
     transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
   }
   50% {
     transform: rotate(-270deg);
     -webkit-transform: rotate(-270deg);
+    -moz-transform: rotate(-270deg);
     z-index: 4;
   }
   100% {
     transform: rotate(-450deg);
     -webkit-transform: rotate(-450deg);
+    -moz-transform: rotate(-450deg);
     z-index: 2;
   }
 }
-.animating {
+/*.animating {
   animation-play-state: running !important;
   -webkit-animation-play-state: running !important;
-}
+  -moz-animation-play-state: running !important;
+}*/
 
 
 

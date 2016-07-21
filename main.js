@@ -120,8 +120,6 @@ function displayRefreshClocksOption() {
     $("#pause-btn").addClass("hidden");
     $("#refresh-btn").removeClass("hidden");
     $(".future-timer").addClass("blurred");
-    
-    $("#goal").val("Congratulations, you've reached your goal!");
   }
 }
 
@@ -142,10 +140,10 @@ function refresh() {
   $(".future-timer").removeClass("blurred");
   $(".pie, .dot").removeClass("animating");
   
-  $("#left .pie, #right .pie, .dot").removeClass("animated");
+  $("#left .pie, #right .pie, .dot").removeClass("animatable");
   setTimeout(function() {
     $(".dot").removeClass("complete");
-    $("#left .pie, #right .pie, .dot").addClass("animated");
+    $("#left .pie, #right .pie, .dot").addClass("animatable");
   }, 500);
   
   customizationBtnDisabled();
@@ -262,7 +260,7 @@ $(document).ready(function() {
         }
       }, 1000);
       displayCurrentWorkTime(true);
-      $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
+      //$(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
       $("#start-btn").addClass("hidden");
       $("#pause-btn").removeClass("hidden");
       $(".add-btn, .minus-btn").addClass("disabled");
