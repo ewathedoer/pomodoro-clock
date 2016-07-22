@@ -58,17 +58,22 @@ function timeCustomization() {
 function displayCurrentWorkTime(forceSubtractWhenPlay) {
   var minutes = convertToMinutes(workingTimeSecs);
   if (workingTimeSecs > 0 || forceSubtractWhenPlay) {
+    // show minutes only so 0 when 59 second left from the session time starts
     $("#current-time").text(currentTime - minutes - 1);
   } else {
     $("#current-time").text(currentTime - minutes);
   }
 }
 
-function displayCurrentBreakTime() {
-  $("#break-time").text(breakTime - convertToMinutes(breakTimeSecs));
+function displayCurrentBreakTime(forceSubtractWhenPlay) {
+  var minutes = convertToMinutes(breakTimeSecs);
+  if (breakTimeSecs > 0 || forceSubtractWhenPlay) {
+    $("#break-time").text(breakTime - minutes - 1);
+  } else {
+    $("#break-time").text(breakTime - minutes);
+  }
 }
 
-// start a break
 function breakStart() {
   if (convertToMinutes(workingTimeSecs) == currentTime) {
     if (breakTime == 0) {
@@ -82,7 +87,6 @@ function breakStart() {
       
       // reset option 
       displayRefreshClocksOption();
-      
     } else {
       $("#break-clock").addClass("animated pulse infinite");
     
@@ -93,8 +97,6 @@ function breakStart() {
           // ...if the break has finished
           if (convertToMinutes(breakTimeSecs) == breakTime) {
             clearInterval(breakIntervalHandler);
-            $("#break-clock").removeClass("animated pulse infinite");
-            $("#break-time").text("0");
             
             // add pomodoro history 
             saveToStorage(new Date(), goal, currentTime);
@@ -108,13 +110,16 @@ function breakStart() {
           }
         }
       }, 1000);
+      displayCurrentBreakTime(true);
     }
   }
-  displayCurrentBreakTime();
 }
 
 function displayRefreshClocksOption() {
   if ((breakTime == convertToMinutes(breakTimeSecs))) {
+    $("#break-clock").removeClass("animated pulse infinite");
+    $("#break-time").text("0");
+    
     $("#pause-btn").addClass("hidden");
     $("#refresh-btn").removeClass("hidden");
     $(".future-timer").addClass("blurred");
@@ -154,12 +159,11 @@ function refreshPomodoro() {
   displayCurrentBreakTime();
 }
 
-// alarm
 function beepPlay() {
   $("#beep").trigger('play');
 }
 
-// marking the buttons of time customization when disabled
+// marking visually the buttons of time customization when disabled
 function customizationBtnDisabled() {
   if (currentTime <= 1 || workingTimeSecs > 0) {
     $(".current-timer .minus-btn").addClass("disabled"); 
@@ -177,12 +181,18 @@ function customizationBtnDisabled() {
 function saveToStorage(time, goal, workSession) {
   // saving history in local storage in reversed chronological order
   if (typeof(Storage) !== "undefined") {
-    pomodoroHistory.unshift({time: time, goal: goal, workSession: workSession});
-    // local storage requires converting strings to the format needed
-    localStorage.setItem("pomodoroItems", JSON.stringify(pomodoroHistory));
+    // need to catch exceptions here because in e.g. private mode Safari it will fail
+    try {
+      pomodoroHistory.unshift({time: time, goal: goal, workSession: workSession});
+      // local storage requires converting strings to the format needed
+      localStorage.setItem("pomodoroItems", JSON.stringify(pomodoroHistory));
+    }
+    catch (e) {
+    }
   } 
 }
 
+// manging correct display of time and date below 10th in pomodoro history
 function pad(value) {
   if(value < 10) {
     return "0" + value;
@@ -192,8 +202,10 @@ function pad(value) {
 }
 
 function checkWebkit() {
-  return navigator.userAgent.indexOf('AppleWebKit') != -1;
+  var agent = navigator.userAgent;
+  return agent.indexOf('AppleWebKit') != -1 && agent.indexOf("Chrome") != -1;
 }
+
 
 $(document).ready(function() {
   displayCurrentWorkTime();

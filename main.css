@@ -1,6 +1,9 @@
-/* color palette 
+/* color palette: 
 action color: deeppink;
-textcolor: #121212;
+text color: #121212;
+primary-background color: lightcyan;
+secondary background color: lightblue;
+body background color: whitesmoke;
 */
 
 body {
@@ -21,14 +24,12 @@ body {
   padding: 1em 0;
   margin-bottom: 1em;
 }
-
 .current-timer-box .btn,
 .current-timer-box .current-clock,
 .future-timer .btn,
 .future-timer .future-clock {
   vertical-align: middle;
 }
-
 .future-clock {
   display: inline-block;
   height: 7em;
@@ -91,7 +92,7 @@ h1 {
   color: black;
 }
 
-/* modal */
+/* pomodoro history modal */
 .modal-body li {
   padding: 1em 0;
 }
@@ -258,8 +259,6 @@ h1 {
   -webkit-animation-play-state: running !important;
   -moz-animation-play-state: running !important;
 }
-
-
 
 /* media queries */
 @media screen and (max-width: 767px) {
