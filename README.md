@@ -4,7 +4,7 @@ The project is based on [the pomodoro technique](https://en.wikipedia.org/wiki/P
 
 To see the result go to [live preview here](http://theonewhodo.es/pomodoro/)
 
-A user can **customize work (session) time** and break time of each pomodoro cycle (pomodoro clock).
+A user can **customize work (session) time and break time** of each pomodoro cycle (pomodoro clock).
 A user can **reset the settings for each new pomodoro**. Reset reloads the settings to previous user's choices regarding time spans.
 Refreshing the page in a browser window reloads the clocks to standard 25 and 5 time spans. In this way the reset is more customizable and usable for a given taste.
 
