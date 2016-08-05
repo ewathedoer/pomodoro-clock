@@ -206,49 +206,69 @@ function checkWebkit() {
   return agent.indexOf('AppleWebKit') != -1 && agent.indexOf("Chrome") != -1;
 }
 
-function startWork() {
-  if (breakIntervalHandler == null) {
+function toggleWork() {
+  if (!$("#start-btn").hasClass("hidden")) {
+    //start work
+    if (breakIntervalHandler == null) {
 
-    intervalHandler = setInterval(function() {
-      workingTimeSecs += 1;
-      if (workingTimeSecs % 60 == 0) {
-        // countdown finished
-        if (convertToMinutes(workingTimeSecs) == currentTime) {
-          clearInterval(intervalHandler);
-          $(".dot").addClass("complete");
-          if(checkWebkit()) {
-            $(".dot, .pie").removeClass("animating");
+      intervalHandler = setInterval(function() {
+        workingTimeSecs += 1;
+        if (workingTimeSecs % 60 == 0) {
+          // countdown finished
+          if (convertToMinutes(workingTimeSecs) == currentTime) {
+            clearInterval(intervalHandler);
+            $(".dot").addClass("complete");
+            if(checkWebkit()) {
+              $(".dot, .pie").removeClass("animating");
+            } else {
+              $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+            }
+
+            beepPlay();
+
+            breakStart();
+
+            // blur starts
+            $(".current-timer-box").addClass("blurred");
           } else {
-            $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+            displayCurrentWorkTime();
           }
-
-          beepPlay();
-
-          breakStart();
-
-          // blur starts
-          $(".current-timer-box").addClass("blurred");
-        } else {
-          displayCurrentWorkTime();
         }
-      }
-    }, 1000);
+      }, 1000);
 
-    displayCurrentWorkTime(true);
-    $("#start-btn").addClass("hidden");
-    $("#pause-btn").removeClass("hidden");
-    $(".add-btn, .minus-btn").addClass("disabled");
-    // for non-webkit browsers use a different animation
-    if(checkWebkit()){
-      $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
-    } else {
-      $(".current-clock .inner-shadow").addClass("animated pulse infinite");
+      displayCurrentWorkTime(true);
+      $("#start-btn").addClass("hidden");
+      $("#pause-btn").removeClass("hidden");
+      $(".add-btn, .minus-btn").addClass("disabled");
+      // for non-webkit browsers use a different animation
+      if(checkWebkit()){
+        $(".dot, .pie").addClass("animating").css("animation-iteration-count", currentTime);
+      } else {
+        $(".current-clock .inner-shadow").addClass("animated pulse infinite");
+      }
+    } else if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
+      breakStart();
+      $("#start-btn").addClass("hidden");
+      $("#pause-btn").removeClass("hidden");
+      $("#break-clock").addClass("animated pulse infinite");
     }
-  } else if ((breakTime - convertToMinutes(breakTimeSecs)) > 0) {
-    breakStart();
-    $("#start-btn").addClass("hidden");
-    $("#pause-btn").removeClass("hidden");
-    $("#break-clock").addClass("animated pulse infinite");
+  } else {
+    //pause code
+    if (breakIntervalHandler == null) {
+      if(checkWebkit()){
+        $(".dot, .pie").removeClass("animating");
+      } else {
+        $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
+      }
+      clearInterval(intervalHandler);
+      $("#start-btn").removeClass("hidden");
+      $("#pause-btn").addClass("hidden");
+    } else {
+      clearInterval(breakIntervalHandler);
+      $("#start-btn").removeClass("hidden");
+      $("#pause-btn").addClass("hidden");
+      $("#break-clock").removeClass("animated pulse infinite");
+    }
   }
 }
 
@@ -258,7 +278,7 @@ $(document).ready(function() {
   
   //trigger start if users tap/click the work session clock
   $(".current-clock").on("click", function() {
-    startWork();
+    toggleWork();
   });
   
   // manging start-btn attention markers
@@ -308,27 +328,9 @@ $(document).ready(function() {
   timeCustomization();
   
   // starting countdown of work time
-  $("#start-btn").on("click", function() {
-    startWork();
+  $("#start-btn, #pause-btn").on("click", function() {
+    toggleWork();
   }); 
-  
-  $("#pause-btn").on("click", function() {
-    if (breakIntervalHandler == null) {
-      if(checkWebkit()){
-        $(".dot, .pie").removeClass("animating");
-      } else {
-        $(".current-clock .inner-shadow").removeClass("animated pulse infinite");
-      }
-      clearInterval(intervalHandler);
-      $("#start-btn").removeClass("hidden");
-      $("#pause-btn").addClass("hidden");
-    } else {
-      clearInterval(breakIntervalHandler);
-      $("#start-btn").removeClass("hidden");
-      $("#pause-btn").addClass("hidden");
-      $("#break-clock").removeClass("animated pulse infinite");
-    }
-  });
   
   // saving the goal
   $("#goal").on("keyup change", function() {
