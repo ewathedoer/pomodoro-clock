@@ -1,8 +1,9 @@
 /* color palette: 
-action color: deeppink;
-text color: #121212;
+action color: #31403e;
+text color on dark background: #121212;
+text color on bright background: #fff;
 primary-background color: lightcyan;
-secondary background color: lightblue;
+secondary background color: #769996;
 body background color: whitesmoke;
 */
 
@@ -18,9 +19,9 @@ body {
   padding: 0 0 1em;
 }
 .headline {
-  background-color: lightblue;
+  background-color: #769996;
   font-size: 2em;
-  color: #121212;
+  color: #fff;
   padding: 1em 0;
   margin-bottom: 1em;
 }
@@ -34,7 +35,7 @@ body {
   display: inline-block;
   height: 7em;
   width: 7em;
-  background-color: lightgreen;
+  background-color: #b1e5e1;
   border-radius: 50%;
 }
 .time {
@@ -66,7 +67,7 @@ h1 {
   margin: 0;
 }
 .shadow {
-  box-shadow: 10px 10px 5px #888888;;
+  box-shadow: 5px 5px 5px #888888;;
 }
 .blurred {
   opacity: 0.1;
@@ -75,17 +76,23 @@ h1 {
   max-width: 68%;
   display: inline-block;
 }
+a {
+  color: #769996;
+}
+a:hover {
+  color: #31403e;
+}
 
 /* button animations */
 .btn:hover, .btn:focus {
-  background-color: deeppink;
+  background-color: #31403e;
   color: #fff;
 }
 .btn.disabled:hover, .btn.disabled:visited, .btn.disabled:focus {
   color: lightgray;
 }
 .attention-btn {
-  background-color: deeppink;
+  background-color: #31403e;
   color: #fff;
 }
 .attention-btn: hover, .attention-btn:focus {
@@ -97,7 +104,7 @@ h1 {
   padding: 1em 0;
 }
 .modal-header .close {
-  color: deeppink;
+  color: #31403e;
 }
 
 /* animated timers */
@@ -140,7 +147,7 @@ h1 {
   background-color: #fff;
 }
 .pie, .dot span {
-  background-color: deeppink;
+  background-color: #31403e;
 }
 .dot.complete {
   display: none;
