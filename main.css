@@ -25,6 +25,12 @@ body {
   padding: 1em 0;
   margin-bottom: 1em;
 }
+.unselectable-text {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */  
+}
 .current-timer-box .btn,
 .current-timer-box .current-clock,
 .future-timer .btn,
